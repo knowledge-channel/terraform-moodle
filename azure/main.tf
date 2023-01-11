@@ -23,7 +23,7 @@ module "database" {
 }
 
 module "containers" {
-  source              = "./modules/database"
+  source              = "./modules/containers"
   azurerm_rg          = var.azurerm_rg
   azurerm_location    = var.azurerm_location
   azurerm_vnet        = var.azurerm_vnet

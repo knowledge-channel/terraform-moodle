@@ -3,7 +3,6 @@
 # Recover Resource Group
 data "azurerm_resource_group" "moodle" {
   name      = var.azurerm_rg
-  location  = var.azurerm_location
 }
 
 # Recover VNet
@@ -14,7 +13,7 @@ data "azurerm_virtual_network" "moodle" {
 
 # Azure Blob Storage
 resource "azurerm_storage_account" "moodle" {
-  name                      = "bitnami-moodle-storage"
+  name                      = "bitnamimoodlestorage"
   resource_group_name       = data.azurerm_resource_group.moodle.name
   location                  = data.azurerm_resource_group.moodle.location
   account_tier              = "Standard"
@@ -53,8 +52,8 @@ resource "azurerm_subnet" "moodle" {
 # Azure Security Group
 resource "azurerm_network_security_group" "moodle" {
   name                = "moodle-aci-nsg"
-  location            = data.azurerm_resource_group.main.location
-  resource_group_name = data.azurerm_resource_group.main.name
+  location            = data.azurerm_resource_group.moodle.location
+  resource_group_name = data.azurerm_resource_group.moodle.name
 
   security_rule {
     name              = "from-gateway-subnet"
@@ -64,9 +63,9 @@ resource "azurerm_network_security_group" "moodle" {
     protocol          = "Tcp"
     source_port_range = "*"
 
-    destination_port_ranges    = [8443]
-    source_address_prefixes    = "*"
-    destination_address_prefix = azurerm_subnet.moodle.address_prefix
+    destination_port_ranges      = [8443]
+    source_address_prefix        = "*"
+    destination_address_prefixes = azurerm_subnet.moodle.address_prefixes
   }
 
   security_rule {
@@ -84,14 +83,14 @@ resource "azurerm_network_security_group" "moodle" {
   security_rule {
     name              = "to-vnet"
     priority          = 100
-    direction         = "VirtualNetwork"
+    direction         = "Inbound"
     access            = "Allow"
     protocol          = "Tcp"
     source_port_range = "*"
 
     destination_port_ranges    = [3306]
     source_address_prefix      = "*"
-    destination_address_prefix = "*"
+    destination_address_prefix = var.database_host
   }
 
   security_rule {
@@ -115,8 +114,8 @@ resource "azurerm_subnet_network_security_group_association" "moodle" {
 
 resource "azurerm_network_profile" "moodle" {
   name                = "moodle-aci-profile"
-  location            = data.azurerm_resource_group.main.location
-  resource_group_name = data.azurerm_resource_group.main.name
+  location            = data.azurerm_resource_group.moodle.location
+  resource_group_name = data.azurerm_resource_group.moodle.name
 
   container_network_interface {
     name = "moodle-aci-nic"
