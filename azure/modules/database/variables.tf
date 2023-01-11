@@ -22,7 +22,7 @@ variable "azurerm_subnet" {
 variable "user" {
   description = "Database admin user"
   type        = string
-  default     = "moodle-db-admin"
+  default     = "moodle_db_admin"
 }
 
 variable "password" {
