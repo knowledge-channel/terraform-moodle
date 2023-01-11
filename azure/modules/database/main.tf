@@ -1,15 +1,13 @@
 # moodle file of MySQL Database
 
 # Recover Resource Group
-resource "azurerm_resource_group" "moodle" {
+data "azurerm_resource_group" "moodle" {
   name      = var.azurerm_rg
   location  = var.azurerm_location
 }
 
 # Recover VNet
-resource "azurerm_virtual_network" "moodle" {
-  address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.moodle.location
+data "azurerm_virtual_network" "moodle" {
   name                = var.azurerm_vnet
   resource_group_name = azurerm_resource_group.moodle.name
 }
