@@ -21,3 +21,17 @@ module "database" {
   tags              = var.tags
   # add optional params
 }
+
+module "containers" {
+  source              = "./modules/database"
+  azurerm_rg          = var.azurerm_rg
+  azurerm_location    = var.azurerm_location
+  azurerm_vnet        = var.azurerm_vnet
+  moodle_password     = random_password.password.result
+  moodle_system_email = "email@test.com"
+  database_host       = module.database.database_host
+  database_name       = module.database.database_name
+  database_user       = module.database.database_user
+  database_password   = module.database.database_password
+  tags                = var.tags
+}
