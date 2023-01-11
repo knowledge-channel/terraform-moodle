@@ -18,5 +18,6 @@ module "database" {
   azurerm_location  = var.azurerm_location
   azurerm_vnet      = var.azurerm_vnet
   password          = random_password.password.result
+  tags              = var.tags
   # add optional params
 }

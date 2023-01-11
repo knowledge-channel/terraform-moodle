@@ -32,6 +32,8 @@ resource "azurerm_subnet" "moodle" {
       ]
     }
   }
+
+  tags = var.tags
 }
 
 resource "azurerm_private_dns_zone" "moodle" {
@@ -64,6 +66,7 @@ resource "azurerm_mysql_flexible_server" "moodle" {
     size_gb = 20
   }
 
+  tags       = var.tags
   depends_on = [azurerm_private_dns_zone_virtual_network_link.moodle]
 }
 
@@ -74,4 +77,5 @@ resource "azurerm_mysql_flexible_database" "moodle" {
   name                = "moodle-db"
   resource_group_name = azurerm_resource_group.moodle.name
   server_name         = azurerm_mysql_flexible_server.moodle.name
+  tags                = var.tags
 }

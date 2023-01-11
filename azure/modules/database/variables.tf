@@ -37,3 +37,8 @@ variable "sku" {
   type        = string
   default     = "B_Standard_B2s"
 }
+
+variable "tags" {
+  description = "Resource tags"
+  type        = map(string) 
+}
