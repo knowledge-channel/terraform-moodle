@@ -8,7 +8,7 @@ data "azurerm_resource_group" "moodle" {
 
 # Recover VNet
 data "azurerm_virtual_network" "moodle" {
-  location            = data.azurerm_resource_group.moodle.location
+  resource_group_name = data.azurerm_resource_group.moodle.name
   name                = var.azurerm_vnet
 }
 
