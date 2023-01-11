@@ -2,21 +2,20 @@
 
 # Recover Resource Group
 data "azurerm_resource_group" "moodle" {
-  name      = var.azurerm_rg
-  location  = var.azurerm_location
+  name = var.azurerm_rg
 }
 
 # Recover VNet
 data "azurerm_virtual_network" "moodle" {
   name                = var.azurerm_vnet
-  resource_group_name = azurerm_resource_group.moodle.name
+  resource_group_name = data.azurerm_resource_group.moodle.name
 }
 
 # Subnet
 resource "azurerm_subnet" "moodle" {
   name                 = var.azurerm_subnet
-  resource_group_name  = azurerm_resource_group.moodle.name
-  virtual_network_name = azurerm_virtual_network.moodle.name
+  resource_group_name  = data.azurerm_resource_group.moodle.name
+  virtual_network_name = data.azurerm_virtual_network.moodle.name
   address_prefixes     = ["10.0.2.0/24"]
   service_endpoints    = ["Microsoft.Storage"]
   
@@ -34,20 +33,20 @@ resource "azurerm_subnet" "moodle" {
 
 resource "azurerm_private_dns_zone" "moodle" {
   name                = "moodle.mysql.database.azure.com"
-  resource_group_name = azurerm_resource_group.moodle.name
+  resource_group_name = data.azurerm_resource_group.moodle.name
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "moodle" {
   name                  = "moodle.com"
   private_dns_zone_name = azurerm_private_dns_zone.moodle.name
-  virtual_network_id    = azurerm_virtual_network.moodle.id
-  resource_group_name   = azurerm_resource_group.moodle.name
+  virtual_network_id    = data.azurerm_virtual_network.moodle.id
+  resource_group_name   = data.azurerm_resource_group.moodle.name
 }
 
 resource "azurerm_mysql_flexible_server" "moodle" {
   name                          = "moodle-mysql-server"
-  resource_group_name           = azurerm_resource_group.moodle.name
-  location                      = azurerm_resource_group.moodle.location
+  resource_group_name           = data.azurerm_resource_group.moodle.name
+  location                      = data.azurerm_resource_group.moodle.location
   administrator_login           = var.user
   administrator_password        = var.password
   backup_retention_days         = 7
@@ -71,6 +70,6 @@ resource "azurerm_mysql_flexible_database" "moodle" {
   charset             = "utf8mb4"
   collation           = "utf8mb4_unicode_ci"
   name                = "moodle-db"
-  resource_group_name = azurerm_resource_group.moodle.name
+  resource_group_name = data.azurerm_resource_group.moodle.name
   server_name         = azurerm_mysql_flexible_server.moodle.name
 }
