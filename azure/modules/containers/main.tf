@@ -88,9 +88,9 @@ resource "azurerm_network_security_group" "moodle" {
     protocol          = "Tcp"
     source_port_range = "*"
 
-    destination_port_ranges    = [3306]
-    source_address_prefix      = "*"
-    destination_address_prefix = var.database_host
+    destination_port_ranges      = [3306]
+    source_address_prefix        = "*"
+    destination_address_prefixes = var.database_subnet_address
   }
 
   security_rule {
@@ -135,7 +135,7 @@ resource "azurerm_container_group" "moodle" {
   
   ip_address_type     = "Private"
   os_type             = "Linux"
-  network_profile_id  = azurerm_network_profile.moodle.id
+  subnet_ids          = [ azurerm_subnet.moodle.id ]
 
   container {
     name   = "bitnami-moodle"

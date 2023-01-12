@@ -1,3 +1,7 @@
+output "subnet_address_prefixes" {
+  value = azurerm_subnet.moodle.address_prefixes
+}
+
 output "database_host" {
   value = azurerm_mysql_flexible_server.moodle.fqdn
 }
