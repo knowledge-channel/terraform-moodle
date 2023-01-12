@@ -54,6 +54,11 @@ variable "moodle_lang" {
   default     = "pt_br" 
 }
 
+variable "database_subnet_address" {
+  description = "Database Subnet Address Prefix"
+  type        = list(string) 
+}
+
 variable "database_host" {
   description = "Database host"
   type        = string
