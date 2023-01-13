@@ -16,7 +16,7 @@ variable "azurerm_vnet" {
 variable "azurerm_subnet" {
   description = "Azure Virtual Subnet"
   type        = string
-  default     = "moodle-aci-subnet"
+  default     = "moodle-bitnami-subnet"
 }
 
 variable "moodle_debug" {
