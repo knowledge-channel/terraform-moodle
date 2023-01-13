@@ -65,6 +65,13 @@ resource "azurerm_mysql_flexible_server" "moodle" {
   depends_on = [azurerm_private_dns_zone_virtual_network_link.moodle]
 }
 
+resource "azurerm_mysql_flexible_server_configuration" "moodle" {
+  name                = "require_secure_transport"
+  resource_group_name = data.azurerm_resource_group.moodle.name
+  server_name         = azurerm_mysql_flexible_server.moodle.name
+  value               = "OFF"
+}
+
 # Create a MySQL Flexible Server Database
 resource "azurerm_mysql_flexible_database" "moodle" {
   charset             = "utf8mb4"

@@ -68,42 +68,7 @@ resource "azurerm_network_security_group" "moodle" {
     destination_address_prefixes = azurerm_subnet.moodle.address_prefixes
   }
 
-  security_rule {
-    name                       = "DenyAllInBound-Override"
-    priority                   = 900
-    direction                  = "Inbound"
-    access                     = "Deny"
-    protocol                   = "*"
-    source_port_range          = "*"
-    destination_port_range     = "*"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
-
-  security_rule {
-    name              = "to-vnet"
-    priority          = 100
-    direction         = "Inbound"
-    access            = "Allow"
-    protocol          = "Tcp"
-    source_port_range = "*"
-
-    destination_port_ranges      = [3306]
-    source_address_prefix        = "*"
-    destination_address_prefixes = var.database_subnet_address
-  }
-
-  security_rule {
-    name                       = "DenyAllOutBound-Override"
-    priority                   = 900
-    direction                  = "Outbound"
-    access                     = "Deny"
-    protocol                   = "*"
-    source_port_range          = "*"
-    destination_port_range     = "*"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
+  # other security roles azure creates by default
 }
 
 # Atach Security Group to Subnet 
