@@ -39,3 +39,11 @@ resource "azurerm_mysql_flexible_database" "moodle" {
   resource_group_name = data.azurerm_resource_group.moodle.name
   server_name         = azurerm_mysql_flexible_server.moodle.name
 }
+
+resource "azurerm_mysql_flexible_server_firewall_rule" "example" {
+  name                = "azure-resources"
+  resource_group_name = data.azurerm_resource_group.moodle.name
+  server_name         = azurerm_mysql_flexible_server.moodle.name
+  start_ip_address    = "0.0.0.0"
+  end_ip_address      = "0.0.0.0"
+}
