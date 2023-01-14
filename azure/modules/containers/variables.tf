@@ -8,17 +8,6 @@ variable "azurerm_location" {
   type        = string
 }
 
-variable "azurerm_vnet" {
-  description = "Azure Virtual Network"
-  type        = string
-}
-
-variable "azurerm_subnet" {
-  description = "Azure Virtual Subnet"
-  type        = string
-  default     = "moodle-bitnami-subnet"
-}
-
 variable "moodle_debug" {
   description = "Start Moodle with debug tools, like logs and more"
   type        = string
@@ -52,11 +41,6 @@ variable "moodle_lang" {
   description = "Moodle Default Language"
   type        = string
   default     = "pt_br" 
-}
-
-variable "database_subnet_address" {
-  description = "Database Subnet Address Prefix"
-  type        = list(string) 
 }
 
 variable "database_host" {

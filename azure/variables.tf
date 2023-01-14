@@ -10,12 +10,6 @@ variable "azurerm_location" {
   default     = "eastus"
 }
 
-variable "azurerm_vnet" {
-  description = "Azure Virtual Network"
-  type        = string
-  default     = "bitnami-moodle-vnet"
-}
-
 variable "tags" {
   description = "Tags description for resources"
   type        = map(string)

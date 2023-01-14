@@ -8,17 +8,6 @@ variable "azurerm_location" {
   type        = string
 }
 
-variable "azurerm_vnet" {
-  description = "Azure Virtual Network"
-  type        = string
-}
-
-variable "azurerm_subnet" {
-  description = "Azure Virtual Subnet"
-  type        = string
-  default     = "moodle-db-subnet"
-}
-
 variable "user" {
   description = "Database admin user"
   type        = string

@@ -5,12 +5,6 @@ data "azurerm_resource_group" "moodle" {
   name      = var.azurerm_rg
 }
 
-# Recover VNet
-data "azurerm_virtual_network" "moodle" {
-  resource_group_name = data.azurerm_resource_group.moodle.name
-  name                = var.azurerm_vnet
-}
-
 # Azure Blob Storage
 resource "azurerm_storage_account" "moodle" {
   name                      = "bitnamimoodlestorage"
@@ -28,79 +22,14 @@ resource "azurerm_storage_share" "moodle" {
   quota                = 50
 }
 
-# Subnet
-resource "azurerm_subnet" "moodle" {
-  name                 = var.azurerm_subnet
-  resource_group_name  = data.azurerm_resource_group.moodle.name
-  virtual_network_name = data.azurerm_virtual_network.moodle.name
-  address_prefixes     = ["10.0.1.0/24"]
-  service_endpoints    = ["Microsoft.Storage"]
-
-  delegation {
-    name = "aci"
-
-    service_delegation {
-      name    = "Microsoft.ContainerInstance/containerGroups"
-      actions = [
-        "Microsoft.Network/virtualNetworks/subnets/join/action",
-        "Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action"
-      ]
-    }
-  }
-}
-
-# Azure Security Group
-resource "azurerm_network_security_group" "moodle" {
-  name                = "moodle-container-nsg"
-  location            = data.azurerm_resource_group.moodle.location
-  resource_group_name = data.azurerm_resource_group.moodle.name
-
-  security_rule {
-    name              = "from-gateway-subnet"
-    priority          = 100
-    direction         = "Inbound"
-    access            = "Allow"
-    protocol          = "Tcp"
-    source_port_range = "*"
-
-    destination_port_ranges      = [8443]
-    source_address_prefix        = "*"
-    destination_address_prefixes = azurerm_subnet.moodle.address_prefixes
-  }
-
-  # other security roles azure creates by default
-}
-
-# Atach Security Group to Subnet 
-resource "azurerm_subnet_network_security_group_association" "moodle" {
-  subnet_id                 = azurerm_subnet.moodle.id
-  network_security_group_id = azurerm_network_security_group.moodle.id
-}
-
-resource "azurerm_network_profile" "moodle" {
-  name                = "moodle-aci-profile"
-  location            = data.azurerm_resource_group.moodle.location
-  resource_group_name = data.azurerm_resource_group.moodle.name
-
-  container_network_interface {
-    name = "moodle-aci-nic"
-
-    ip_configuration {
-      name      = "moodle-ip-config"
-      subnet_id = azurerm_subnet.moodle.id
-    }
-  }
-}
-
 # Azure Container Group
 resource "azurerm_container_group" "moodle" {
   name                = "moodle-container"
   location            = data.azurerm_resource_group.moodle.location
   resource_group_name = data.azurerm_resource_group.moodle.name
-  
-  ip_address_type     = "Private"
+  dns_name_label      = "bitnami-moodle"
+  ip_address_type     = "Public"
   os_type             = "Linux"
-  subnet_ids          = [ azurerm_subnet.moodle.id ]
 
   container {
     name   = "bitnami-moodle"
