@@ -27,21 +27,22 @@ resource "azurerm_container_group" "moodle" {
   name                = "moodle-container"
   location            = data.azurerm_resource_group.moodle.location
   resource_group_name = data.azurerm_resource_group.moodle.name
-  dns_name_label      = "bitnami-moodle"
+  dns_name_label      = data.azurerm_resource_group.moodle.name
   ip_address_type     = "Public"
   os_type             = "Linux"
 
   container {
     name   = "bitnami-moodle"
     image  = "bitnami/moodle"
-    cpu    = "0.5"
-    memory = "1.5"
+    cpu    = "1"
+    memory = "1"
 
     environment_variables = {
       "BITNAMI_DEBUG"               = var.moodle_debug
       "MOODLE_USERNAME"             = var.moodle_admin
       "MOODLE_EMAIL"                = var.moodle_system_email
       "MOODLE_SITE_NAME"            = var.moodle_site_name
+      "MOODLE_HOST"                 = "${data.azurerm_resource_group.moodle.name}.${data.azurerm_resource_group.moodle.location}.azurecontainer.io"
       "MOODLE_LANG"                 = var.moodle_lang
       "MOODLE_DATABASE_TYPE"        = "auroramysql"
       "MOODLE_DATABASE_HOST"        = var.database_host

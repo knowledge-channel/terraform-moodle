@@ -1,5 +1,8 @@
 # way to get generated password
 output "created_password" {
-  sensitive = true
-  value     = random_password.password
+  value = random_password.password
+}
+
+output "moodle_host" {
+  value = module.containers.moodle_host
 }
