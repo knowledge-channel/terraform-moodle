@@ -48,6 +48,7 @@ resource "azurerm_container_group" "moodle" {
       "MOODLE_DATABASE_NAME"        = var.database_name
       "MOODLE_DATABASE_USER"        = var.database_user
       "MOODLE_DATABASE_MIN_VERSION" = "5.6.47.0"
+      "APACHE_HTTPS_PORT_NUMBER"    = 443
     }
 
     secure_environment_variables = {
@@ -70,6 +71,11 @@ resource "azurerm_container_group" "moodle" {
       protocol = "TCP"
     }
   }
+
+  exposed_port = [{
+    port     = 443
+    protocol = "TCP"
+  }]
 
   tags = var.tags
 }
