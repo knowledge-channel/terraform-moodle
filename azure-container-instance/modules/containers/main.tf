@@ -34,22 +34,22 @@ resource "azurerm_container_group" "moodle" {
   container {
     name   = "bitnami-moodle"
     image  = "bitnami/moodle"
-    cpu    = "1"
-    memory = "1"
+    cpu    = "2"
+    memory = "4"
 
     environment_variables = {
       "BITNAMI_DEBUG"               = var.moodle_debug
       "MOODLE_USERNAME"             = var.moodle_admin
       "MOODLE_EMAIL"                = var.moodle_system_email
       "MOODLE_SITE_NAME"            = var.moodle_site_name
-      "MOODLE_HOST"                 = "${data.azurerm_resource_group.moodle.name}.${data.azurerm_resource_group.moodle.location}.azurecontainer.io"
       "MOODLE_LANG"                 = var.moodle_lang
       "MOODLE_DATABASE_TYPE"        = "auroramysql"
       "MOODLE_DATABASE_HOST"        = var.database_host
       "MOODLE_DATABASE_NAME"        = var.database_name
       "MOODLE_DATABASE_USER"        = var.database_user
       "MOODLE_DATABASE_MIN_VERSION" = "5.6.47.0"
-      "APACHE_HTTPS_PORT_NUMBER"    = 443
+      "APACHE_HTTP_PORT_NUMBER"     = 80
+      "PHP_MEMORY_LIMIT"            = "1024M"
     }
 
     secure_environment_variables = {
@@ -68,13 +68,13 @@ resource "azurerm_container_group" "moodle" {
     }
 
     ports {
-      port     = 443
+      port     = 80
       protocol = "TCP"
     }
   }
 
   exposed_port = [{
-    port     = 443
+    port     = 80
     protocol = "TCP"
   }]
 
