@@ -1,6 +1,6 @@
 # Terraform Moodle
 
-Template to deploy Moodle&trade; instance based on [Bitnami docker images](https://github.com/bitnami/containers).
+Template to deploy Moodle&trade; instance based on [Bitnami docker images](https://github.com/bitnami/containers/tree/main/bitnami/moodle).
 
 ## Motion
 
@@ -13,7 +13,7 @@ This template is developed to help delivery a production environment of [Self-Ho
 
 ## Usage
 
-TODO
+- [Azure Container Moodle Instance](./azure-container-instance/README.md)
 
 ## License
 
