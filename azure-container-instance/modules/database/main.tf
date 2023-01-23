@@ -19,7 +19,7 @@ resource "azurerm_mysql_flexible_server" "moodle" {
 
   storage {
     iops    = 360
-    size_gb = 20
+    size_gb = 50
   }
 
   tags       = var.tags
