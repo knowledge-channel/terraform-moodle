@@ -15,6 +15,7 @@ resource "azurerm_mysql_flexible_server" "moodle" {
   geo_redundant_backup_enabled  = false
   sku_name                      = var.sku
   version                       = "5.7"
+  zone                          = "1"
 
   storage {
     iops    = 360
