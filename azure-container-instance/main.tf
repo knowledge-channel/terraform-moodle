@@ -15,7 +15,6 @@ resource "random_password" "password" {
 module "database" {
   source            = "./modules/database"
   azurerm_rg        = var.azurerm_rg
-  azurerm_location  = var.azurerm_location
   password          = random_password.password.result
   tags              = var.tags
   # add optional params
@@ -24,7 +23,6 @@ module "database" {
 module "containers" {
   source                  = "./modules/containers"
   azurerm_rg              = var.azurerm_rg
-  azurerm_location        = var.azurerm_location
   moodle_password         = random_password.password.result
   moodle_system_email     = "email@test.com"
   database_host           = module.database.database_host
