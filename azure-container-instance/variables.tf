@@ -4,12 +4,6 @@ variable "azurerm_rg" {
   default     = "bitnami-moodle"
 }
 
-variable "azurerm_location" {
-  description = "Azure Location"
-  type        = string
-  default     = "eastus"
-}
-
 variable "tags" {
   description = "Tags description for resources"
   type        = map(string)

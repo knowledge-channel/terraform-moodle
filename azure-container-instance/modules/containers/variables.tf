@@ -3,11 +3,6 @@ variable "azurerm_rg" {
   type        = string
 }
 
-variable "azurerm_location" {
-  description = "Azure Location"
-  type        = string
-}
-
 variable "moodle_debug" {
   description = "Start Moodle with debug tools, like logs and more"
   type        = string

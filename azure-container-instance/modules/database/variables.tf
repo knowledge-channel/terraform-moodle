@@ -3,11 +3,6 @@ variable "azurerm_rg" {
   type        = string
 }
 
-variable "azurerm_location" {
-  description = "Azure Location"
-  type        = string
-}
-
 variable "user" {
   description = "Database admin user"
   type        = string
