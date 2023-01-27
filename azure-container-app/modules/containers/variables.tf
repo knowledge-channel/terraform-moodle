@@ -86,6 +86,12 @@ variable "logs_access_key" {
   sensitive   = true
 }
 
+
+variable "logs_app_insights" {
+  description = "Application Insights For Environment"
+  type        = string
+}
+
 variable "tags" {
   description = "Resource tags"
   type        = map(string)

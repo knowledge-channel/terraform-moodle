@@ -46,5 +46,6 @@ module "containers" {
   volume_access_key   = module.storage.access_key
   logs_workspace_id   = module.logs.workspace_id
   logs_access_key     = module.logs.access_key
+  logs_app_insights   = module.logs.app_insights
   tags                = var.tags
 }
