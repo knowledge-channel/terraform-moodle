@@ -14,3 +14,12 @@ resource "azurerm_log_analytics_workspace" "moodle" {
   retention_in_days   = 90
   tags                = var.tags
 }
+
+resource "azurerm_application_insights" "resource" {
+  name                = "bitnami-moodle-insights"
+  resource_group_name = data.azurerm_resource_group.moodle.name
+  location            = data.azurerm_resource_group.moodle.location
+  application_type    = "web"
+  workspace_id        = azurerm_log_analytics_workspace.moodle.id
+  tags                = var.tags
+}

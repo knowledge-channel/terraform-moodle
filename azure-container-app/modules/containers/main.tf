@@ -15,6 +15,7 @@ resource "azapi_resource" "moodle_env" {
 
   body = jsonencode({
     properties = {
+      daprAIInstrumentationKey = var.logs_app_insights
       appLogsConfiguration = {
         destination = "log-analytics"
         logAnalyticsConfiguration = {
@@ -57,6 +58,7 @@ resource "azapi_resource" "moodle" {
         ingress = {
           external   = true
           targetPort = 80
+          allowInsecure = true
         }
       }
       template = {
@@ -132,7 +134,7 @@ resource "azapi_resource" "moodle" {
         ]
         scale = {
           minReplicas = 1
-          maxReplicas = 3
+          maxReplicas = 1
         }
         volumes = [
           {
