@@ -102,7 +102,7 @@ resource "azapi_resource" "moodle" {
               },
               {
                 name = "APACHE_HTTP_PORT_NUMBER"
-                value = 80
+                value = "80"
               },
             ]
             volumeMounts = [
