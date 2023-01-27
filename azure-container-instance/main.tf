@@ -13,21 +13,38 @@ resource "random_password" "password" {
 }
 
 module "database" {
-  source            = "./modules/database"
-  azurerm_rg        = var.azurerm_rg
-  password          = random_password.password.result
-  tags              = var.tags
+  source     = "./modules/database"
+  azurerm_rg = var.azurerm_rg
+  password   = random_password.password.result
+  tags       = var.tags
   # add optional params
 }
 
+module "storage" {
+  source     = "./modules/storage"
+  azurerm_rg = var.azurerm_rg
+  tags       = var.tags
+}
+
+module "logs" {
+  source     = "./modules/logs"
+  azurerm_rg = var.azurerm_rg
+  tags       = var.tags
+}
+
 module "containers" {
-  source                  = "./modules/containers"
-  azurerm_rg              = var.azurerm_rg
-  moodle_password         = random_password.password.result
-  moodle_system_email     = "email@test.com"
-  database_host           = module.database.database_host
-  database_name           = module.database.database_name
-  database_user           = module.database.database_user
-  database_password       = module.database.database_password
-  tags                    = var.tags
+  source              = "./modules/containers"
+  azurerm_rg          = var.azurerm_rg
+  moodle_password     = random_password.password.result
+  moodle_system_email = "email@test.com"
+  database_host       = module.database.host
+  database_name       = module.database.name
+  database_user       = module.database.user
+  database_password   = module.database.password
+  volume_share_name   = module.storage.share_name
+  volume_storage_name = module.storage.name
+  volume_access_key   = module.storage.access_key
+  logs_workspace_id   = module.logs.workspace_id
+  logs_access_key     = module.logs.access_key
+  tags                = var.tags
 }

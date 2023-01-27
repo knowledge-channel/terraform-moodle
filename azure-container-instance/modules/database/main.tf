@@ -6,23 +6,23 @@ data "azurerm_resource_group" "moodle" {
 }
 
 resource "azurerm_mysql_flexible_server" "moodle" {
-  name                          = "moodle-mysql-server"
-  resource_group_name           = data.azurerm_resource_group.moodle.name
-  location                      = data.azurerm_resource_group.moodle.location
-  administrator_login           = var.user
-  administrator_password        = var.password
-  backup_retention_days         = 7
-  geo_redundant_backup_enabled  = false
-  sku_name                      = var.sku
-  version                       = "5.7"
-  zone                          = "1"
+  name                         = "moodle-mysql-server"
+  resource_group_name          = data.azurerm_resource_group.moodle.name
+  location                     = data.azurerm_resource_group.moodle.location
+  administrator_login          = var.user
+  administrator_password       = var.password
+  backup_retention_days        = 7
+  geo_redundant_backup_enabled = false
+  sku_name                     = var.sku
+  version                      = "5.7"
+  zone                         = "1"
 
   storage {
     iops    = 360
     size_gb = 50
   }
 
-  tags       = var.tags
+  tags = var.tags
 }
 
 resource "azurerm_mysql_flexible_server_configuration" "moodle" {

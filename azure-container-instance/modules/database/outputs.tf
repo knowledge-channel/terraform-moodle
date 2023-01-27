@@ -1,16 +1,16 @@
-output "database_host" {
+output "host" {
   value = azurerm_mysql_flexible_server.moodle.fqdn
 }
 
-output "database_name" {
+output "name" {
   value = azurerm_mysql_flexible_database.moodle.name
 }
 
-output "database_user" {
+output "user" {
   value = azurerm_mysql_flexible_server.moodle.administrator_login
 }
 
-output "database_password" {
+output "password" {
   value     = azurerm_mysql_flexible_server.moodle.administrator_password
   sensitive = true
 }
