@@ -28,7 +28,7 @@ resource "azapi_resource" "moodle_env" {
 
 resource "azapi_resource" "moodle_storage" {
   type      = "Microsoft.App/managedEnvironments/storages@2022-03-03"
-  parent_id = data.azurerm_resource_group.moodle.id
+  parent_id = azapi_resource.moodle_env.id
   location  = data.azurerm_resource_group.moodle.location
   name      = "moodle-container-storage"
   tags      = var.tags
