@@ -1,6 +1,6 @@
-# Azure Container Moodle Instance
+# Azure Container Moodle App
 
-Template to deploy Moodle&trade; instance using [ACI](https://azure.microsoft.com/pt-br/products/container-instances).
+Template to deploy Moodle&trade; instance using [ACA](https://azure.microsoft.com/products/container-apps).
 
 ## Terraform Cloud Usage
 

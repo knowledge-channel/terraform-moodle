@@ -13,7 +13,7 @@ This template is developed to help delivery a production environment of [Self-Ho
 
 ## Usage
 
-- [Azure Container Moodle Instance](./azure-container-instance/README.md)
+- [Azure Container Moodle App](./azure-container-app/README.md)
 
 ## License
 
