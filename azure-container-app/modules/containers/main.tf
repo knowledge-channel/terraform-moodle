@@ -70,6 +70,14 @@ resource "azapi_resource" "moodle" {
               cpu    = 0.5
               memory = "1.0Gi"
             }
+            probes = [
+              {
+                failureThreshold = 10
+                initialDelaySeconds = 60
+                periodSeconds = 240
+                timeoutSeconds = 240
+              }
+            ]
             env = [
               {
                 name  = "BITNAMI_DEBUG"
