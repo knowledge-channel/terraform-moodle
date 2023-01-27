@@ -1,5 +1,5 @@
 output "share_name" {
-  value = azurerm_storage_account.moodle.name
+  value = azurerm_storage_share.moodle.name
 }
 
 output "name" {
