@@ -18,7 +18,7 @@ resource "azurerm_mysql_flexible_server" "moodle" {
   zone                         = "1"
 
   storage {
-    iops    = 360
+    iops    = 450
     size_gb = 50
   }
 
