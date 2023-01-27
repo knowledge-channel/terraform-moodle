@@ -5,7 +5,7 @@ terraform {
     organization = "knowledge-channel"
 
     workspaces {
-      name = "azure-moodle"
+      name = "azure-container-app-moodle"
     }
   }
 
