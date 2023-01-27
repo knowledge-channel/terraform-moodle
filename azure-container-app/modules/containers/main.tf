@@ -56,8 +56,8 @@ resource "azapi_resource" "moodle" {
       managedEnvironmentId = azapi_resource.moodle_env.id
       configuration = {
         ingress = {
-          external   = true
-          targetPort = 80
+          external      = true
+          targetPort    = 80
           allowInsecure = true
         }
       }
@@ -72,10 +72,15 @@ resource "azapi_resource" "moodle" {
             }
             probes = [
               {
-                failureThreshold = 10
+                type = "liveness"
+                httpGet = {
+                  path = "/"
+                  port = 80
+                },
                 initialDelaySeconds = 60
                 periodSeconds = 240
-                timeoutSeconds = 240
+                failureThreshold = 10
+                timeoutSeconds = 10
               }
             ]
             env = [
