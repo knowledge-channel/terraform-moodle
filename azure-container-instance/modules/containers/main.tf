@@ -26,92 +26,111 @@ resource "azapi_resource" "moodle_env" {
   })
 }
 
+resource "azapi_resource" "moodle_storage" {
+  type      = "Microsoft.App/managedEnvironments/storages@2022-03-03"
+  parent_id = data.azurerm_resource_group.moodle.id
+  location  = data.azurerm_resource_group.moodle.location
+  name      = "moodle-container-storage"
+  tags      = var.tags
+
+  body = jsonencode({
+    properties = {
+      azureFile = {
+        accountName = var.volume_storage_name
+        shareName   = var.volume_share_name
+        accountKey  = var.volume_access_key
+        accessMode  = "ReadWrite"
+      }
+    }
+  })
+}
+
 # Azure Container App
 resource "azapi_resource" "moodle" {
   type      = "Microsoft.App/containerApps@2022-03-01"
   parent_id = data.azurerm_resource_group.moodle.id
   location  = data.azurerm_resource_group.moodle.location
   name      = "moodle-containers"
-  
+
   body = jsonencode({
-    properties: {
+    properties : {
       managedEnvironmentId = azapi_resource.moodle_env.id
       configuration = {
         ingress = {
-          external = true
+          external   = true
           targetPort = 80
         }
       }
       template = {
         containers = [
           {
-            name = "main"
+            name  = "main"
             image = "bitnami/moodle:latest"
             resources = {
-              cpu = 0.5
+              cpu    = 0.5
               memory = "1.0Gi"
             }
             env = [
               {
-                name = "BITNAMI_DEBUG"
+                name  = "BITNAMI_DEBUG"
                 value = var.moodle_debug
               },
               {
-                name = "MOODLE_USERNAME"
+                name  = "MOODLE_USERNAME"
                 value = var.moodle_admin
               },
               {
-                name = "MOODLE_PASSWORD"
+                name  = "MOODLE_PASSWORD"
                 value = var.moodle_password
               },
               {
-                name = "MOODLE_EMAIL"
+                name  = "MOODLE_EMAIL"
                 value = var.moodle_system_email
               },
               {
-                name = "MOODLE_SITE_NAME"
+                name  = "MOODLE_SITE_NAME"
                 value = var.moodle_site_name
               },
               {
-                name = "MOODLE_LANG"
+                name  = "MOODLE_LANG"
                 value = var.moodle_lang
               },
               {
-                name = "MOODLE_DATABASE_TYPE"
+                name  = "MOODLE_DATABASE_TYPE"
                 value = "auroramysql"
               },
               {
-                name = "MOODLE_DATABASE_HOST"
+                name  = "MOODLE_DATABASE_HOST"
                 value = var.database_host
               },
               {
-                name = "MOODLE_DATABASE_NAME"
+                name  = "MOODLE_DATABASE_NAME"
                 value = var.database_name
               },
               {
-                name = "MOODLE_DATABASE_USER"
+                name  = "MOODLE_DATABASE_USER"
                 value = var.database_user
               },
               {
-                name = "MOODLE_DATABASE_PASSWORD"
+                name  = "MOODLE_DATABASE_PASSWORD"
                 value = var.database_password
               },
               {
-                name = "MOODLE_DATABASE_MIN_VERSION"
+                name  = "MOODLE_DATABASE_MIN_VERSION"
                 value = "5.6.47.0"
               },
               {
-                name = "APACHE_HTTP_PORT_NUMBER"
+                name  = "APACHE_HTTP_PORT_NUMBER"
                 value = "80"
               },
             ]
             volumeMounts = [
               {
                 volumeName = "moodle-volume"
-                mountPath = "/bitnami/moodle"
+                mountPath  = "/bitnami/moodle"
               }
             ]
-          }         
+          }
         ]
         scale = {
           minReplicas = 1
@@ -119,8 +138,8 @@ resource "azapi_resource" "moodle" {
         }
         volumes = [
           {
-            name = "moodle-volume"
-            storageName = var.volume_storage_name
+            name        = "moodle-volume"
+            storageName = azapi_resource.moodle_storage.name
             storageType = "AzureFile"
           }
         ]
