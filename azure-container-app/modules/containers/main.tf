@@ -72,7 +72,7 @@ resource "azapi_resource" "moodle" {
             }
             probes = [
               {
-                type = "liveness"
+                type = "Liveness"
                 httpGet = {
                   path = "/"
                   port = 80
@@ -80,7 +80,18 @@ resource "azapi_resource" "moodle" {
                 initialDelaySeconds = 60
                 periodSeconds = 240
                 failureThreshold = 10
-                timeoutSeconds = 10
+                timeoutSeconds = 240
+              },
+              {
+                type = "Startup"
+                httpGet = {
+                  path = "/"
+                  port = 80
+                },
+                initialDelaySeconds = 60
+                periodSeconds = 240
+                failureThreshold = 10
+                timeoutSeconds = 240
               }
             ]
             env = [
