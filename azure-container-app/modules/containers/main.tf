@@ -153,7 +153,7 @@ resource "azapi_resource" "moodle" {
               name = "http-rule",
               http = {
                 metadata = {
-                  concurrentRequests = 100
+                  concurrentRequests = "100"
                 }
               }
             }
