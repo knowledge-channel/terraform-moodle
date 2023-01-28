@@ -78,9 +78,9 @@ resource "azapi_resource" "moodle" {
                   port = 80
                 },
                 initialDelaySeconds = 60
-                periodSeconds = 240
-                failureThreshold = 10
-                timeoutSeconds = 240
+                periodSeconds       = 240
+                failureThreshold    = 10
+                timeoutSeconds      = 240
               }
             ]
             env = [
@@ -147,7 +147,17 @@ resource "azapi_resource" "moodle" {
         ]
         scale = {
           minReplicas = 1
-          maxReplicas = 1
+          maxReplicas = 5
+          rules = [
+            {
+              name = "http-rule",
+              http = {
+                metadata = {
+                  concurrentRequests = 100
+                }
+              }
+            }
+          ]
         }
         volumes = [
           {
