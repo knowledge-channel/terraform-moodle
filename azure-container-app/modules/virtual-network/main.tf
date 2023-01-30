@@ -49,6 +49,7 @@ resource "azurerm_public_ip" "moodle_bastion" {
   resource_group_name = data.azurerm_resource_group.moodle.name
   allocation_method   = "Static"
   sku                 = "Standard"
+  tags                = var.tags
 }
 
 resource "azurerm_bastion_host" "example" {
@@ -61,5 +62,7 @@ resource "azurerm_bastion_host" "example" {
     subnet_id            = azurerm_subnet.moodle_bastion.id
     public_ip_address_id = azurerm_public_ip.moodle_bastion.id
   }
+
+  tags = var.tags
 }
 
