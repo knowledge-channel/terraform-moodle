@@ -20,18 +20,6 @@ resource "azurerm_subnet" "moodle_database" {
   address_prefixes     = ["10.0.1.0/24"]
 }
 
-resource "azurerm_private_dns_zone" "moodle_database" {
-  name                = "moodle.mysql.database.azure.com"
-  resource_group_name = data.azurerm_resource_group.moodle.name
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "moodle_database" {
-  name                  = "moodleDatabaseVnetZone.com"
-  private_dns_zone_name = azurerm_private_dns_zone.moodle_database.name
-  virtual_network_id    = azurerm_virtual_network.moodle.id
-  resource_group_name   = data.azurerm_resource_group.moodle.name
-}
-
 resource "azurerm_subnet" "moodle_containers" {
   name                 = "containers-subnet"
   resource_group_name  = data.azurerm_resource_group.moodle.name
@@ -39,20 +27,8 @@ resource "azurerm_subnet" "moodle_containers" {
   address_prefixes     = ["10.0.2.0/24"]
 }
 
-resource "azurerm_private_dns_zone" "moodle_containers" {
-  name                = "moodle.azure.com"
-  resource_group_name = data.azurerm_resource_group.moodle.name
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "moodle_containers" {
-  name                  = "moodleVnetZone.com"
-  private_dns_zone_name = azurerm_private_dns_zone.moodle_containers.name
-  virtual_network_id    = azurerm_virtual_network.moodle.id
-  resource_group_name   = data.azurerm_resource_group.moodle.name
-}
-
 resource "azurerm_subnet" "moodle_bastion" {
-  name                 = "bastion-subnet"
+  name                 = "AzureBastionSubnet"
   resource_group_name  = data.azurerm_resource_group.moodle.name
   virtual_network_name = azurerm_virtual_network.moodle.name
   address_prefixes     = ["10.0.5.0/24"]

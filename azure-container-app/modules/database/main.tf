@@ -5,12 +5,24 @@ data "azurerm_resource_group" "moodle" {
   name = var.azurerm_rg
 }
 
+resource "azurerm_private_dns_zone" "moodle" {
+  name                = "moodle.mysql.database.azure.com"
+  resource_group_name = data.azurerm_resource_group.moodle.name
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "moodle" {
+  name                  = "moodleDatabaseVnetZone.com"
+  resource_group_name   = data.azurerm_resource_group.moodle.name
+  private_dns_zone_name = azurerm_private_dns_zone.moodle.name
+  virtual_network_id    = var.vnet_id
+}
+
 resource "azurerm_mysql_flexible_server" "moodle" {
   name                         = "moodle-mysql-server"
   resource_group_name          = data.azurerm_resource_group.moodle.name
   location                     = data.azurerm_resource_group.moodle.location
   delegated_subnet_id          = var.subnet_id
-  private_dns_zone_id          = var.private_dns_zone_id
+  private_dns_zone_id          = azurerm_private_dns_zone_virtual_network_link.moodle.id
   administrator_login          = var.user
   administrator_password       = var.password
   backup_retention_days        = 7
