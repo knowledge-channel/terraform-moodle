@@ -23,6 +23,13 @@ resource "azapi_resource" "moodle_env" {
           sharedKey  = var.logs_access_key
         }
       }
+      vnetConfiguration = {
+        internal               = true
+        infrastructureSubnetId = var.subnet_id
+        dockerBridgeCidr       = "10.0.2.1/24"
+        platformReservedCidr   = "10.0.2.0/24"
+        platformReservedDnsIP  = "10.0.2.2"
+      }
     }
   })
 }
@@ -171,4 +178,12 @@ resource "azapi_resource" "moodle" {
   })
 
   tags = var.tags
+}
+
+resource "azurerm_private_dns_a_record" "moodle" {
+  name                = azapi_resource.moodle.name
+  zone_name           = var.private_dns_zone_name
+  resource_group_name = data.azurerm_resource_group.moodle.name
+  ttl                 = 300
+  records             = ["${jsondecode(azapi_resource.moodle_env.output).properties.staticIp}"]
 }

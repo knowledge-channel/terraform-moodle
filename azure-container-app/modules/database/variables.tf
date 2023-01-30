@@ -3,6 +3,16 @@ variable "azurerm_rg" {
   type        = string
 }
 
+variable "subnet_id" {
+  description = "Azure Subnet Id"
+  type        = string
+}
+
+variable "private_dns_zone_id" {
+  description = "Azure Private Zone DNS Id"
+  type        = string
+}
+
 variable "user" {
   description = "Database admin user"
   type        = string
@@ -24,5 +34,5 @@ variable "sku" {
 
 variable "tags" {
   description = "Resource tags"
-  type        = map(string) 
+  type        = map(string)
 }

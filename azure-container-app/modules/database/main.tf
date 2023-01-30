@@ -9,6 +9,8 @@ resource "azurerm_mysql_flexible_server" "moodle" {
   name                         = "moodle-mysql-server"
   resource_group_name          = data.azurerm_resource_group.moodle.name
   location                     = data.azurerm_resource_group.moodle.location
+  delegated_subnet_id          = var.subnet_id
+  private_dns_zone_id          = var.private_dns_zone_id
   administrator_login          = var.user
   administrator_password       = var.password
   backup_retention_days        = 7
@@ -39,12 +41,4 @@ resource "azurerm_mysql_flexible_database" "moodle" {
   name                = "moodle-db"
   resource_group_name = data.azurerm_resource_group.moodle.name
   server_name         = azurerm_mysql_flexible_server.moodle.name
-}
-
-resource "azurerm_mysql_flexible_server_firewall_rule" "example" {
-  name                = "azure-resources"
-  resource_group_name = data.azurerm_resource_group.moodle.name
-  server_name         = azurerm_mysql_flexible_server.moodle.name
-  start_ip_address    = "0.0.0.0"
-  end_ip_address      = "0.0.0.0"
 }
