@@ -3,13 +3,13 @@ variable "azurerm_rg" {
   type        = string
 }
 
-variable "subnet_id" {
-  description = "Azure Subnet Id"
+variable "vnet_id" {
+  description = "Azure Virtual Network Id"
   type        = string
 }
 
-variable "private_dns_zone_name" {
-  description = "Azure Private Zone DNS Name"
+variable "subnet_id" {
+  description = "Azure Subnet Id"
   type        = string
 }
 
