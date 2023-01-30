@@ -57,6 +57,8 @@ resource "azapi_resource" "moodle" {
       configuration = {
         ingress = {
           external  = true
+          allowInsecure = true
+          targetPort = 80
           transport = "auto"
           traffic = [
             {
@@ -90,22 +92,19 @@ resource "azapi_resource" "moodle" {
                 type = "Startup"
                 httpGet = {
                   path   = "/"
-                  port   = 443
-                  scheme = "HTTPS"
-                },
+                  port   = 80
+                }
                 initialDelaySeconds = 60
-                periodSeconds       = 240
+                periodSeconds       = 60
                 failureThreshold    = 10
-                timeoutSeconds      = 240
+                timeoutSeconds      = 60
               },
               {
                 type = "Liveness"
                 httpGet = {
                   path   = "/"
-                  port   = 443
-                  scheme = "HTTPS"
-                },
-                initialDelaySeconds = 60
+                  port   = 80
+                }
               }
             ]
             env = [
@@ -158,8 +157,8 @@ resource "azapi_resource" "moodle" {
                 value = "5.6.47.0"
               },
               {
-                name  = "APACHE_HTTPS_PORT_NUMBER"
-                value = "443"
+                name  = "APACHE_HTTP_PORT_NUMBER"
+                value = "80"
               },
             ]
             volumeMounts = [
