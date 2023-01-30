@@ -23,17 +23,8 @@ resource "azapi_resource" "moodle_env" {
           sharedKey  = var.logs_access_key
         }
       }
-      vnetConfiguration = {
-        internal               = true
-        infrastructureSubnetId = var.subnet_id
-        dockerBridgeCidr       = "10.2.0.1/16"
-        platformReservedCidr   = "10.1.0.0/16"
-        platformReservedDnsIP  = "10.1.0.2"
-      }
     }
   })
-  
-  response_export_values  = ["properties.defaultDomain", "properties.staticIp"]
 }
 
 resource "azapi_resource" "moodle_storage" {
@@ -65,10 +56,25 @@ resource "azapi_resource" "moodle" {
       managedEnvironmentId = azapi_resource.moodle_env.id
       configuration = {
         ingress = {
-          external      = true
-          targetPort    = 80
-          allowInsecure = true
+          external  = true
+          transport = "auto"
+          traffic = [
+            {
+              latestRevision = true
+              weight         = 100
+            }
+          ]
         }
+        secrets = [
+          {
+            name = "moodle-password"
+            value = var.moodle_password
+          },
+          {
+            name = "moodle-db-password"
+            value = var.database_password
+          },
+        ]
       }
       template = {
         containers = [
@@ -83,13 +89,23 @@ resource "azapi_resource" "moodle" {
               {
                 type = "Startup"
                 httpGet = {
-                  path = "/"
-                  port = 80
+                  path   = "/"
+                  port   = 443
+                  scheme = "HTTPS"
                 },
                 initialDelaySeconds = 60
                 periodSeconds       = 240
                 failureThreshold    = 10
                 timeoutSeconds      = 240
+              },
+              {
+                type = "Liveness"
+                httpGet = {
+                  path   = "/"
+                  port   = 443
+                  scheme = "HTTPS"
+                },
+                initialDelaySeconds = 60
               }
             ]
             env = [
@@ -103,7 +119,7 @@ resource "azapi_resource" "moodle" {
               },
               {
                 name  = "MOODLE_PASSWORD"
-                value = var.moodle_password
+                secretRef = "moodle-password"
               },
               {
                 name  = "MOODLE_EMAIL"
@@ -135,15 +151,15 @@ resource "azapi_resource" "moodle" {
               },
               {
                 name  = "MOODLE_DATABASE_PASSWORD"
-                value = var.database_password
+                secretRef = "moodle-db-password"
               },
               {
                 name  = "MOODLE_DATABASE_MIN_VERSION"
                 value = "5.6.47.0"
               },
               {
-                name  = "APACHE_HTTP_PORT_NUMBER"
-                value = "80"
+                name  = "APACHE_HTTPS_PORT_NUMBER"
+                value = "443"
               },
             ]
             volumeMounts = [
@@ -156,7 +172,7 @@ resource "azapi_resource" "moodle" {
         ]
         scale = {
           minReplicas = 1
-          maxReplicas = 5
+          maxReplicas = 10
           rules = [
             {
               name = "http-rule",
@@ -180,24 +196,4 @@ resource "azapi_resource" "moodle" {
   })
 
   tags = var.tags
-}
-
-resource "azurerm_private_dns_zone" "moodle" {
-  name                = jsondecode(azapi_resource.moodle_env.output).properties.defaultDomain
-  resource_group_name = data.azurerm_resource_group.moodle.name
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "moodle" {
-  name                  = "moodleVnetZone.com"
-  resource_group_name   = data.azurerm_resource_group.moodle.name
-  private_dns_zone_name = azurerm_private_dns_zone.moodle.name
-  virtual_network_id    = var.vnet_id
-}
-
-resource "azurerm_private_dns_a_record" "moodle" {
-  name                = azapi_resource.moodle.name
-  resource_group_name = data.azurerm_resource_group.moodle.name
-  zone_name           = azurerm_private_dns_zone.moodle.name
-  ttl                 = 300
-  records             = ["${jsondecode(azapi_resource.moodle_env.output).properties.staticIp}"]
 }

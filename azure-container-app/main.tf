@@ -12,17 +12,9 @@ resource "random_password" "password" {
   upper            = true
 }
 
-module "vnet" {
-  source     = "./modules/virtual-network"
-  azurerm_rg = var.azurerm_rg
-  tags       = var.tags
-}
-
 module "database" {
   source     = "./modules/database"
   azurerm_rg = var.azurerm_rg
-  vnet_id    = module.vnet.vnet_id
-  subnet_id  = module.vnet.database_subnet_id
   password   = random_password.password.result
   tags       = var.tags
   # add optional params
@@ -43,10 +35,8 @@ module "logs" {
 module "containers" {
   source              = "./modules/containers"
   azurerm_rg          = var.azurerm_rg
-  vnet_id             = module.vnet.vnet_id
-  subnet_id           = module.vnet.containers_subnet_id
   moodle_password     = random_password.password.result
-  moodle_system_email = "email@test.com"
+  moodle_system_email = "no-reply@test.com"
   database_host       = module.database.host
   database_name       = module.database.name
   database_user       = module.database.user

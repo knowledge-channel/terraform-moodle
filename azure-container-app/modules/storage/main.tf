@@ -7,17 +7,21 @@ data "azurerm_resource_group" "moodle" {
 
 # Azure Blob Storage
 resource "azurerm_storage_account" "moodle" {
-  name                     = "bitnamimoodlestorage"
-  resource_group_name      = data.azurerm_resource_group.moodle.name
-  location                 = data.azurerm_resource_group.moodle.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-  tags                     = var.tags
+  name                          = "bitnamimoodlestorage"
+  resource_group_name           = data.azurerm_resource_group.moodle.name
+  location                      = data.azurerm_resource_group.moodle.location
+  account_tier                  = var.account_tier
+  account_kind                  = var.account_kind
+  account_replication_type      = var.replication_type
+  large_file_share_enabled      = true
+  public_network_access_enabled = false
+  tags                          = var.tags
 }
 
 # Azure File Share
 resource "azurerm_storage_share" "moodle" {
   name                 = "bitnami-moodle-share"
   storage_account_name = azurerm_storage_account.moodle.name
-  quota                = 50
+  enabled_protocol     = "SMB"
+  quota                = 2048
 }

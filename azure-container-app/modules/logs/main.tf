@@ -11,10 +11,11 @@ resource "azurerm_log_analytics_workspace" "moodle" {
   resource_group_name = data.azurerm_resource_group.moodle.name
   location            = data.azurerm_resource_group.moodle.location
   sku                 = var.sku
-  retention_in_days   = 90
+  retention_in_days   = 30
   tags                = var.tags
 }
 
+# Azure Application Insights
 resource "azurerm_application_insights" "resource" {
   name                = "bitnami-moodle-insights"
   resource_group_name = data.azurerm_resource_group.moodle.name
