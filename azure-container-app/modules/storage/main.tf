@@ -14,7 +14,6 @@ resource "azurerm_storage_account" "moodle" {
   account_kind                  = var.account_kind
   account_replication_type      = var.replication_type
   large_file_share_enabled      = true
-  public_network_access_enabled = false
   tags                          = var.tags
 }
 
@@ -23,5 +22,5 @@ resource "azurerm_storage_share" "moodle" {
   name                 = "bitnami-moodle-share"
   storage_account_name = azurerm_storage_account.moodle.name
   enabled_protocol     = "SMB"
-  quota                = 2048
+  quota                = 1024
 }
