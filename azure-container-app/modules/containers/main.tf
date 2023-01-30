@@ -181,7 +181,7 @@ resource "azapi_resource" "moodle" {
 }
 
 resource "azurerm_private_dns_zone" "moodle" {
-  name                = jsondecode(azapi_resource.moodle.output).properties.defaultDomain
+  name                = jsondecode(azapi_resource.moodle_env.output).properties.defaultDomain
   resource_group_name = data.azurerm_resource_group.moodle.name
 }
 

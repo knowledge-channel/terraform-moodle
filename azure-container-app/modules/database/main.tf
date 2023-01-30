@@ -36,7 +36,8 @@ resource "azurerm_mysql_flexible_server" "moodle" {
     size_gb = 50
   }
 
-  tags = var.tags
+  depends_on = [azurerm_private_dns_zone_virtual_network_link.moodle]
+  tags       = var.tags
 }
 
 resource "azurerm_mysql_flexible_server_configuration" "moodle" {
