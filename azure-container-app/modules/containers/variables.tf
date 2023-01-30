@@ -3,6 +3,16 @@ variable "azurerm_rg" {
   type        = string
 }
 
+variable "subnet_id" {
+  description = "Azure Subnet Id"
+  type        = string
+}
+
+variable "private_dns_zone_name" {
+  description = "Azure Private Zone DNS Name"
+  type        = string
+}
+
 variable "moodle_debug" {
   description = "Start Moodle with debug tools, like logs and more"
   type        = string
