@@ -49,6 +49,8 @@ resource "azapi_resource" "moodle_storage" {
       }
     }
   })
+  
+  response_export_values  = ["properties.defaultDomain", "properties.staticIp"]
 }
 
 # Azure Container App
