@@ -24,14 +24,14 @@ resource "azurerm_subnet" "moodle_containers" {
   name                 = "containers-subnet"
   resource_group_name  = data.azurerm_resource_group.moodle.name
   virtual_network_name = azurerm_virtual_network.moodle.name
-  address_prefixes     = ["10.0.2.0/24"]
+  address_prefixes     = ["10.0.2.0/21"]
 }
 
 resource "azurerm_subnet" "moodle_bastion" {
   name                 = "AzureBastionSubnet"
   resource_group_name  = data.azurerm_resource_group.moodle.name
   virtual_network_name = azurerm_virtual_network.moodle.name
-  address_prefixes     = ["10.0.5.0/24"]
+  address_prefixes     = ["10.0.5.0/27"]
 }
 
 resource "azurerm_public_ip" "moodle_bastion" {
