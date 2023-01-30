@@ -22,7 +22,7 @@ resource "azurerm_mysql_flexible_server" "moodle" {
   resource_group_name          = data.azurerm_resource_group.moodle.name
   location                     = data.azurerm_resource_group.moodle.location
   delegated_subnet_id          = var.subnet_id
-  private_dns_zone_id          = azurerm_private_dns_zone_virtual_network_link.moodle.id
+  private_dns_zone_id          = azurerm_private_dns_zone.moodle.id
   administrator_login          = var.user
   administrator_password       = var.password
   backup_retention_days        = 7

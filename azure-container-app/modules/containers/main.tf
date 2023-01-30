@@ -26,9 +26,9 @@ resource "azapi_resource" "moodle_env" {
       vnetConfiguration = {
         internal               = true
         infrastructureSubnetId = var.subnet_id
-        dockerBridgeCidr       = "10.0.2.1/16"
-        platformReservedCidr   = "10.0.2.0/16"
-        platformReservedDnsIP  = "10.0.2.2"
+        dockerBridgeCidr       = "10.2.0.1/16"
+        platformReservedCidr   = "10.1.0.0/16"
+        platformReservedDnsIP  = "10.1.0.2"
       }
     }
   })
