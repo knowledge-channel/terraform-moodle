@@ -3,16 +3,6 @@ variable "azurerm_rg" {
   type        = string
 }
 
-variable "vnet_id" {
-  description = "Azure Virtual Network Id"
-  type        = string
-}
-
-variable "subnet_id" {
-  description = "Azure Subnet Id"
-  type        = string
-}
-
 variable "user" {
   description = "Database admin user"
   type        = string
