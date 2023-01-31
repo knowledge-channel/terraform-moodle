@@ -26,7 +26,7 @@ resource "azapi_resource" "moodle_env" {
     }
   })
   
-  response_export_values  = ["properties.staticIp"]
+  response_export_values  = ["properties.defaultDomain"]
 }
 
 resource "azapi_resource" "moodle_storage" {
