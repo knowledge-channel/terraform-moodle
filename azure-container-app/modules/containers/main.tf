@@ -25,6 +25,8 @@ resource "azapi_resource" "moodle_env" {
       }
     }
   })
+  
+  response_export_values  = ["properties.staticIp"]
 }
 
 resource "azapi_resource" "moodle_storage" {
@@ -84,8 +86,8 @@ resource "azapi_resource" "moodle" {
             name  = "main"
             image = "bitnami/moodle:latest"
             resources = {
-              cpu    = 0.5
-              memory = "1.0Gi"
+              cpu    = 1
+              memory = "2.0Gi"
             }
             probes = [
               {
@@ -105,12 +107,18 @@ resource "azapi_resource" "moodle" {
                   path   = "/"
                   port   = 80
                 }
+                periodSeconds = 240
+                initialDelaySeconds = 60
               }
             ]
             env = [
               {
                 name  = "BITNAMI_DEBUG"
                 value = var.moodle_debug
+              },
+              {
+                name = "MOODLE_HOST"
+                value = "${var.azurerm_rg}.azureedge.net"
               },
               {
                 name  = "MOODLE_USERNAME"
