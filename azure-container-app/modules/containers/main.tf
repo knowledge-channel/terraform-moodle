@@ -117,18 +117,6 @@ resource "azapi_resource" "moodle" {
                 value = var.moodle_debug
               },
               {
-                name = "MOODLE_HOST"
-                value = "${var.azurerm_rg}.azureedge.net"
-              },
-              {
-                name = "MOODLE_REVERSEPROXY"
-                value = "true"
-              },
-              {
-                name = "MOODLE_SSLPROXY"
-                value = "true"
-              },
-              {
                 name  = "MOODLE_USERNAME"
                 value = var.moodle_admin
               },
