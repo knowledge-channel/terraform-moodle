@@ -5,24 +5,14 @@ variable "azurerm_rg" {
 
 variable "account_kind" {
   description = "Account kind of the storage account"
-  default     = "StorageV2"
+  default     = "FileStorage"
   type        = string
-
-   validation {
-    condition = contains(["Storage", "StorageV2"], var.account_kind)
-    error_message = "The account kind of the storage account is invalid."
-  }
 }
 
 variable "account_tier" {
   description = "Account tier of the storage account"
-  default     = "Standard"
+  default     = "Premium"
   type        = string
-
-   validation {
-    condition = contains(["Standard", "Premium"], var.account_tier)
-    error_message = "The account tier of the storage account is invalid."
-  }
 }
 
 variable "replication_type" {
@@ -31,7 +21,7 @@ variable "replication_type" {
   type        = string
 
   validation {
-    condition = contains(["LRS", "ZRS", "GRS", "GZRS", "RA-GRS", "RA-GZRS"], var.replication_type)
+    condition = contains(["LRS", "ZRS"], var.replication_type)
     error_message = "The replication type of the storage account is invalid."
   }
 }

@@ -95,9 +95,9 @@ resource "azapi_resource" "moodle" {
                   port   = 80
                 }
                 initialDelaySeconds = 60
-                periodSeconds       = 120
+                periodSeconds       = 240
                 failureThreshold    = 10
-                timeoutSeconds      = 120
+                timeoutSeconds      = 240
               },
               {
                 type = "Liveness"
