@@ -49,10 +49,3 @@ module "containers" {
   logs_app_insights   = module.logs.app_insights
   tags                = var.tags
 }
-
-module "cdn" {
-  source     = "./modules/cdn"
-  azurerm_rg = var.azurerm_rg
-  origin     = module.containers.default_domain
-  tags       = var.tags
-}
