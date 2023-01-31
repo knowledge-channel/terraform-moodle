@@ -21,5 +21,4 @@ resource "azurerm_storage_share" "moodle" {
   name                 = "bitnami-moodle-share"
   storage_account_name = azurerm_storage_account.moodle.name
   quota                = 1024
-
 }
