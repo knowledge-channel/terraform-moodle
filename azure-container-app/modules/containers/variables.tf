@@ -7,6 +7,11 @@ variable "moodle_debug" {
   description = "Start Moodle with debug tools, like logs and more"
   type        = string
   default     = "true"
+
+  validation {
+    condition = contains(["true", "false"], var.moodle_debug)
+    error_message = "This option only accepts 'true' or 'false'"
+  }
 }
 
 variable "moodle_admin" {
