@@ -1,6 +1,6 @@
 # Generate random value for the login password
 resource "random_password" "password" {
-  length           = 8
+  length           = 12
   lower            = true
   min_lower        = 1
   min_numeric      = 1
@@ -48,4 +48,11 @@ module "containers" {
   logs_access_key     = module.logs.access_key
   logs_app_insights   = module.logs.app_insights
   tags                = var.tags
+}
+
+module "cdn" {
+  source     = "./modules/cdn"
+  azurerm_rg = var.azurerm_rg
+  origin     = module.containers.public_ip
+  tags       = var.tags
 }
