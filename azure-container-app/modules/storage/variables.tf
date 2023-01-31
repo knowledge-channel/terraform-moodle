@@ -31,7 +31,7 @@ variable "replication_type" {
   type        = string
 
   validation {
-    condition = contains(["LRS", "ZRS"], var.replication_type)
+    condition = contains(["LRS", "ZRS", "GRS", "GZRS", "RA-GRS", "RA-GZRS"], var.replication_type)
     error_message = "The replication type of the storage account is invalid."
   }
 }

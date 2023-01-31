@@ -21,19 +21,4 @@ resource "azurerm_storage_share" "moodle" {
   name                 = "bitnami-moodle-share"
   storage_account_name = azurerm_storage_account.moodle.name
   quota                = 1024
-
-}
-
-# Block public access
-resource "azurerm_storage_account_network_rules" "moodle" {
-  storage_account_id = azurerm_storage_account.moodle.id
-
-  default_action             = "Allow"
-  ip_rules                   = []
-  virtual_network_subnet_ids = []
-  bypass                     = ["AzureServices"]
-
-  depends_on = [
-    azurerm_storage_share.moodle
-  ]
 }
