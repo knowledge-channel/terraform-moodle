@@ -121,6 +121,14 @@ resource "azapi_resource" "moodle" {
                 value = "${var.azurerm_rg}.azureedge.net"
               },
               {
+                name = "MOODLE_REVERSEPROXY"
+                value = "true"
+              },
+              {
+                name = "MOODLE_SSLPROXY"
+                value = "true"
+              },
+              {
                 name  = "MOODLE_USERNAME"
                 value = var.moodle_admin
               },
@@ -163,6 +171,14 @@ resource "azapi_resource" "moodle" {
               {
                 name  = "MOODLE_DATABASE_MIN_VERSION"
                 value = "5.6.47.0"
+              },
+              {
+                name  = "PHP_ENABLE_OPCACHE"
+                value = "true"
+              },
+              {
+                name  = "PHP_MEMORY_LIMIT"
+                value = "512M"
               },
               {
                 name  = "APACHE_HTTP_PORT_NUMBER"

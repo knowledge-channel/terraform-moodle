@@ -6,7 +6,7 @@ variable "azurerm_rg" {
 variable "moodle_debug" {
   description = "Start Moodle with debug tools, like logs and more"
   type        = string
-  default     = true
+  default     = "true"
 }
 
 variable "moodle_admin" {
