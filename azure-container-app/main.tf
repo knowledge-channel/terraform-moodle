@@ -53,6 +53,6 @@ module "containers" {
 module "cdn" {
   source     = "./modules/cdn"
   azurerm_rg = var.azurerm_rg
-  origin     = module.containers.public_ip
+  origin     = module.containers.default_domain
   tags       = var.tags
 }
